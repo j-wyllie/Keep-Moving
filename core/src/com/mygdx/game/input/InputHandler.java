@@ -1,0 +1,73 @@
+package com.mygdx.game.input;
+
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
+import com.badlogic.gdx.InputProcessor;
+import com.badlogic.gdx.graphics.Camera;
+import com.badlogic.gdx.math.Vector3;
+
+public class InputHandler implements InputProcessor {
+    Camera camera;
+    private Vector3 tp;
+    private boolean dragging;
+
+    public InputHandler(Camera camera) {
+        this.camera = camera;
+        Gdx.input.setInputProcessor(this);
+        tp = new Vector3(0, 0, 0);
+    }
+
+    @Override
+    public boolean touchDown(int screenX, int screenY, int pointer, int button) {
+        // ignore if its not left mouse button or first touch pointer
+        if (button != Input.Buttons.LEFT || pointer > 0) return false;
+        camera.unproject(tp.set(screenX, screenY, 0));
+        dragging = true;
+        return true;
+    }
+
+    @Override
+    public boolean touchUp(int screenX, int screenY, int pointer, int button) {
+        if (button != Input.Buttons.LEFT || pointer > 0) return false;
+        camera.unproject(tp.set(screenX, screenY, 0));
+        dragging = false;
+        return true;
+    }
+
+    @Override
+    public boolean touchDragged(int screenX, int screenY, int pointer) {
+        if (!dragging) return false;
+        camera.unproject(tp.set(screenX, screenY, 0));
+        return true;
+    }
+
+    @Override
+    public boolean keyDown(int keycode) {
+        return false;
+    }
+
+    @Override
+    public boolean keyUp(int keycode) {
+        return false;
+    }
+
+    @Override
+    public boolean keyTyped(char character) {
+        return false;
+    }
+
+    @Override
+    public boolean mouseMoved(int screenX, int screenY) {
+        return false;
+    }
+
+    @Override
+    public boolean scrolled(int amount) {
+        return false;
+    }
+
+    public Vector3 getTouchPoint() { return tp; }
+
+    public float getX() { return tp.x; }
+    public float getY() { return tp.y; }
+}
