@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.Camera;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 
 public class InputHandler implements InputProcessor {
@@ -15,6 +16,12 @@ public class InputHandler implements InputProcessor {
         this.camera = camera;
         Gdx.input.setInputProcessor(this);
         tp = new Vector3(0, 0, 0);
+    }
+
+    public InputHandler(Camera camera, Vector2 startPos) {
+        this.camera = camera;
+        Gdx.input.setInputProcessor(this);
+        tp = new Vector3(startPos.x, startPos.y, 0);
     }
 
     @Override

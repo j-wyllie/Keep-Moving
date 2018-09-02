@@ -29,9 +29,9 @@ public class PlayScreen implements Screen {
         //initially set our gamcam to be centered correctly at the start of of map
         gamecam.position.set(gamePort.getWorldWidth() / 2, gamePort.getWorldHeight() / 2, 0);
 
-        inputHandler = new InputHandler(gamecam);
-
         this.mainPlayer = new Player(this);
+
+        inputHandler = new InputHandler(gamecam, mainPlayer.getStartPos());
     }
 
     @Override
@@ -48,7 +48,7 @@ public class PlayScreen implements Screen {
         handleInput(dt);
         gamecam.update();
 
-        mainPlayer.setPosition(inputHandler.getX(), inputHandler.getY());
+        mainPlayer.setTargetPos(inputHandler.getX(), inputHandler.getY());
         mainPlayer.update(dt);
     }
 
