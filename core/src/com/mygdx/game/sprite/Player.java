@@ -9,49 +9,21 @@ import com.badlogic.gdx.math.Vector2;
 import com.mygdx.game.ZombieTrain;
 import com.mygdx.game.screen.PlayScreen;
 
-public class Player extends Sprite {
-    private PlayScreen playScreen;
-    private Texture playerImage;
-    private final Vector2 START_POS = new Vector2(ZombieTrain.V_WIDTH / 2, ZombieTrain.V_HEIGHT / 2);
-    private Vector2 targetPos = new Vector2(ZombieTrain.V_WIDTH / 2, ZombieTrain.V_HEIGHT / 2);
+public class Player extends Agent {
+    private  PlayScreen playScreen;
 
     public Player(PlayScreen playScreen) {
+        super(playScreen, "player.png");
         this.playScreen = playScreen;
-        playerImage = new Texture(Gdx.files.internal("player.png"));
-
-        setSize(playerImage.getWidth(), playerImage.getHeight());
-        TextureRegion textureRegion = new TextureRegion(playerImage, 0, 0, (int) getWidth(), (int) getWidth());
-        setBounds(START_POS.x, START_POS.y, getWidth(), getHeight());
-        setOriginCenter();
-        setRegion(textureRegion);
     }
 
+    @Override
     public void update(float dt) {
-        Vector2 toTarget = new Vector2(targetPos.x - getOriginBasedX(), targetPos.y - getOriginBasedY());
-        if (toTarget.len() > 0.5) {
-            toTarget.nor();
-            float newX = getOriginBasedX()  + toTarget.x * dt * 100;
-            float newY = getOriginBasedY() + toTarget.y * dt * 100;
-            setOriginBasedPosition(newX, newY);
-            setRotation(toTarget.angle() - 90);
-        }
-        System.out.print(targetPos.x + "  " + targetPos.y + "\n");
+        setTargetPos(playScreen.getInputHandler().getX(), playScreen.getInputHandler().getY());
+        moveTowardsTarget(dt);
     }
 
     public void draw(Batch batch) {
-        // make position the middle of the sprite
         super.draw(batch);
-    }
-
-    public void setTargetPos(Vector2 targetPos) { this.targetPos = targetPos; }
-    public void setTargetPos(float x, float y) {
-        targetPos.x = x;
-        targetPos.y = y;
-    }
-    private float getOriginBasedX() { return getX() + getOriginX(); }
-    private float getOriginBasedY() { return getY() + getOriginY(); }
-
-    public Vector2 getStartPos() {
-        return START_POS;
     }
 }
