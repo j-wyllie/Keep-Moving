@@ -18,13 +18,16 @@ import java.util.ArrayList;
 
 public class PlayScreen implements Screen {
     public ZombieTrain game;
-    private OrthographicCamera gamecam;
+    private OrthographicCamera gameCam;
     private Viewport gamePort;
-    private  InputHandler inputHandler;
-    public World world;
+    private InputHandler inputHandler;
+
+    // box2d variables
+    private World world;
     private Box2DDebugRenderer b2dr;
     private B2WorldCreator creator;
 
+    // sprite variables
     private Player mainPlayer;
     private ArrayList<Zombie> zombies;
 
@@ -32,22 +35,22 @@ public class PlayScreen implements Screen {
         this.game = game;
 
         // create cam used to follow the player through cam world
-        gamecam = new OrthographicCamera();
+        gameCam = new OrthographicCamera();
 
         // create a FitViewport to maintain virtual aspect ratio despite screen size
-        gamePort = new FitViewport(ZombieTrain.V_WIDTH, ZombieTrain.V_HEIGHT, gamecam);
+        gamePort = new FitViewport(ZombieTrain.V_WIDTH, ZombieTrain.V_HEIGHT, gameCam);
 
         // initially set our gamcam to be centered correctly at the start of of map
-        gamecam.position.set(gamePort.getWorldWidth() / 2, gamePort.getWorldHeight() / 2, 0);
+        gameCam.position.set(gamePort.getWorldWidth() / 2, gamePort.getWorldHeight() / 2, 0);
 
         // initialise input handler
-        inputHandler = new InputHandler(gamecam);
+        inputHandler = new InputHandler(gameCam);
 
         // initialise box2d
         world = new World(new Vector2(0, 0), true);
         b2dr = new Box2DDebugRenderer();
         creator = new B2WorldCreator(this);
-        world.setContactListener(new WorldContactListener());
+        world.setContactListener(new WorldContactListener(game));
 
         // generate sprites
         this.mainPlayer = new Player(this);
@@ -64,8 +67,9 @@ public class PlayScreen implements Screen {
     }
 
     private void update(float dt) {
-        //update our gamecam with correct coordinates after changes
-        gamecam.update();
+        //update our gameCam with correct coordinates after changes
+        gameCam.update();
+        world.step(1 / 60f, 6, 2);
 
         mainPlayer.update(dt);
         for (Zombie zombie : zombies) {
@@ -77,7 +81,11 @@ public class PlayScreen implements Screen {
     public void render(float dt) {
         update(dt);
 
-        game.batch.setProjectionMatrix(gamecam.combined);
+        // renderer our Box2DDebugLines
+        b2dr.render(world, gameCam.combined);
+
+        // draw sprites
+        game.batch.setProjectionMatrix(gameCam.combined);
         game.batch.begin();
             mainPlayer.draw(game.batch);
             for (Zombie zombie : zombies) {
@@ -108,8 +116,11 @@ public class PlayScreen implements Screen {
 
     @Override
     public void dispose() {
-
+        world.dispose();
+        b2dr.dispose();
     }
 
     public InputHandler getInputHandler() { return inputHandler; }
+
+    public World getWorld() { return world; }
 }

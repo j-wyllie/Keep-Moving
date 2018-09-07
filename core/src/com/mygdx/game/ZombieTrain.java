@@ -14,6 +14,9 @@ public class ZombieTrain extends Game {
     // Virtual Screen size and Box2D Scale(Pixels Per Meter)
 	public static final int V_WIDTH = 225;
 	public static final int V_HEIGHT = 400;
+
+	public static final short PLAYER_COLLISION_BIT = 2;
+	public static final short ZOMBIE_COLLISION_BIT = 4;
 	//public static final int PPM = 100;
 
 	public SpriteBatch batch;
