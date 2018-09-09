@@ -77,4 +77,6 @@ public class InputHandler implements InputProcessor {
 
     public float getX() { return tp.x; }
     public float getY() { return tp.y; }
+
+    public static boolean isTouched() { return Gdx.input.isTouched(); }
 }

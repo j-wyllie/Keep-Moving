@@ -2,15 +2,29 @@ package com.mygdx.game.screen;
 
 
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.utils.viewport.FitViewport;
+import com.mygdx.game.ZombieTrain;
+import com.mygdx.game.tool.InputHandler;
+
+import static com.mygdx.game.tool.InputHandler.isTouched;
 
 public class EndScreen implements Screen {
+    private ZombieTrain game;
+
+    public EndScreen(ZombieTrain game) {
+        this.game = game;
+    }
+
     @Override
     public void show() {
 
     }
 
     private void update(float dt) {
-       // gameCam.update();
+       if (isTouched()) {
+            game.setScreen(new PlayScreen(game));
+       }
     }
 
     @Override

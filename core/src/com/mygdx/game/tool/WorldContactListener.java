@@ -8,11 +8,12 @@ import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.Manifold;
 import com.mygdx.game.ZombieTrain;
 import com.mygdx.game.screen.EndScreen;
+import com.mygdx.game.sprite.Zombie;
 
 public class WorldContactListener implements ContactListener {
-    private Game game;
+    private ZombieTrain game;
 
-    public WorldContactListener(Game game) {
+    public WorldContactListener(ZombieTrain game) {
         this.game = game;
     }
 
@@ -25,7 +26,7 @@ public class WorldContactListener implements ContactListener {
 
         switch (cDef) {
             case ZombieTrain.PLAYER_COLLISION_BIT | ZombieTrain.ZOMBIE_COLLISION_BIT:
-                game.setScreen(new EndScreen());
+                game.setScreen(new EndScreen(game));
         }
     }
 

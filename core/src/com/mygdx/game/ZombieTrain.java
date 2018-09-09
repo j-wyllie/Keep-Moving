@@ -20,6 +20,7 @@ public class ZombieTrain extends Game {
 	//public static final int PPM = 100;
 
 	public SpriteBatch batch;
+
 	
 	@Override
 	public void create () {

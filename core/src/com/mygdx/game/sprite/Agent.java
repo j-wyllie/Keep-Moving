@@ -19,7 +19,7 @@ public abstract class Agent extends Sprite {
     private float moveSpeed = 100;
     private final int HIT_BOX_RADIUS = 4;
     private short collisionBit = 0;
-    private Vector2 startPos;
+    private Vector2 startPos = new Vector2(ZombieTrain.V_WIDTH / 2, ZombieTrain.V_HEIGHT / 2);
     private Vector2 targetPos = new Vector2(ZombieTrain.V_WIDTH / 2, ZombieTrain.V_HEIGHT / 2);
 
     protected World world;
@@ -28,6 +28,7 @@ public abstract class Agent extends Sprite {
 
     public Agent(PlayScreen playScreen, String texturePath, short collisionBit) {
         this.playScreen = playScreen;
+        this.collisionBit = collisionBit;
 
         agentImage = new Texture(Gdx.files.internal(texturePath));
         setSize(agentImage.getWidth(), agentImage.getHeight());
@@ -37,7 +38,7 @@ public abstract class Agent extends Sprite {
         setRegion(textureRegion);
 
         world = playScreen.getWorld();
-        this.collisionBit = collisionBit;
+        definePhysics();
     }
 
     public abstract void update(float dt);
@@ -86,6 +87,6 @@ public abstract class Agent extends Sprite {
     protected void setStartPos(Vector2 startPos) {
         this.startPos = startPos;
         setBounds(startPos.x, startPos.y, getWidth(), getHeight());
-        definePhysics();
+        b2body.setTransform(startPos, 0);
     }
 }
