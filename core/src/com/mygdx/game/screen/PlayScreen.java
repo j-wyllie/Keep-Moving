@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.World;
+import com.badlogic.gdx.utils.TimeUtils;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.mygdx.game.ZombieTrain;
@@ -17,6 +18,9 @@ import com.mygdx.game.tool.WorldContactListener;
 import java.util.ArrayList;
 
 public class PlayScreen implements Screen {
+    private static final long SPAWN_TIME_MILLIS = 1000;
+    private int NUM_START_ZOMBIES = 10;
+
     public ZombieTrain game;
     private OrthographicCamera gameCam;
     private Viewport gamePort;
@@ -30,6 +34,7 @@ public class PlayScreen implements Screen {
     // sprite variables
     private Player mainPlayer;
     private ArrayList<Zombie> zombies;
+    private long lastSpawnTime = 0;
 
     public PlayScreen(ZombieTrain game) {
         this.game = game;
@@ -55,10 +60,10 @@ public class PlayScreen implements Screen {
         // generate sprites
         this.mainPlayer = new Player(this);
         this.zombies = new ArrayList<Zombie>();
-        for (int i = 0; i < 10; i++) {
+        for (int i = 0; i < NUM_START_ZOMBIES; i++) {
             zombies.add(new Zombie(this));
         }
-
+        lastSpawnTime = TimeUtils.nanoTime();
     }
 
     @Override
@@ -70,6 +75,12 @@ public class PlayScreen implements Screen {
         //update our gameCam with correct coordinates after changes
         gameCam.update();
         world.step(1 / 60f, 6, 2);
+
+        // spawning new zombies
+        if (TimeUtils.nanoTime() - lastSpawnTime > SPAWN_TIME_MILLIS * 1000000) {
+            lastSpawnTime = TimeUtils.nanoTime();
+            zombies.add(new Zombie(this));
+        }
 
         mainPlayer.update(dt);
         for (Zombie zombie : zombies) {

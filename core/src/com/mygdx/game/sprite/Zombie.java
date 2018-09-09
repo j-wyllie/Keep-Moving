@@ -1,5 +1,6 @@
 package com.mygdx.game.sprite;
 
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.CircleShape;
@@ -10,7 +11,6 @@ import com.mygdx.game.screen.PlayScreen;
 import java.util.Random;
 
 public class Zombie extends Agent {
-    private Random random;
     private final int ZOMBIE_POS_VARIANCE = ZombieTrain.V_WIDTH + ZombieTrain.V_HEIGHT;
     private final int MOVE_SPEED_VARIANCE = 25;
     private final int MOVE_SPEED_MIN = 45;
@@ -18,7 +18,6 @@ public class Zombie extends Agent {
     public Zombie(PlayScreen playScreen) {
         super(playScreen, "zombie.png", ZombieTrain.ZOMBIE_COLLISION_BIT);
 
-        random = new Random();
         setMoveSpeed(genRandMoveSpeed());
         setStartPos(genStartPos());
     }
@@ -34,13 +33,13 @@ public class Zombie extends Agent {
     }
 
     private int genRandMoveSpeed() {
-        return MOVE_SPEED_MIN + random.nextInt(MOVE_SPEED_VARIANCE);
+        return MOVE_SPEED_MIN + MathUtils.random(0, MOVE_SPEED_VARIANCE);
     }
 
     protected Vector2 genStartPos() {
         Vector2 pos;
-        int randPos = random.nextInt(random.nextInt(ZOMBIE_POS_VARIANCE));
-        boolean isFarSide = random.nextBoolean();
+        int randPos = MathUtils.random(0, ZOMBIE_POS_VARIANCE);
+        boolean isFarSide = MathUtils.randomBoolean();
         // randPos lies on the virtual
         if (randPos >= ZombieTrain.V_WIDTH) {
             randPos -= ZombieTrain.V_WIDTH;
