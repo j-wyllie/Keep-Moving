@@ -8,6 +8,7 @@ import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.TimeUtils;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
+import com.mygdx.game.Scene.Hud;
 import com.mygdx.game.ZombieTrain;
 import com.mygdx.game.tool.B2WorldCreator;
 import com.mygdx.game.tool.InputHandler;
@@ -25,6 +26,8 @@ public class PlayScreen implements Screen {
     private OrthographicCamera gameCam;
     private Viewport gamePort;
     private InputHandler inputHandler;
+
+    private Hud hud;
 
     // box2d variables
     private World world;
@@ -51,6 +54,9 @@ public class PlayScreen implements Screen {
         // initialise input handler
         inputHandler = new InputHandler(gameCam);
 
+        // create time HUD
+        hud = new Hud(game.batch);
+
         // initialise box2d
         world = new World(new Vector2(0, 0), true);
         b2dr = new Box2DDebugRenderer();
@@ -72,9 +78,12 @@ public class PlayScreen implements Screen {
     }
 
     private void update(float dt) {
-        //update our gameCam with correct coordinates after changes
+        // update our gameCam with correct coordinates after changes
         gameCam.update();
         world.step(1 / 60f, 6, 2);
+
+        // update game timer
+        hud.update(dt);
 
         // spawning new zombies
         if (TimeUtils.nanoTime() - lastSpawnTime > SPAWN_TIME_MILLIS * 1000000) {
@@ -94,6 +103,8 @@ public class PlayScreen implements Screen {
 
         // renderer our Box2DDebugLines
         b2dr.render(world, gameCam.combined);
+
+        hud.stage.draw();
 
         // draw sprites
         game.batch.setProjectionMatrix(gameCam.combined);
@@ -129,6 +140,7 @@ public class PlayScreen implements Screen {
     public void dispose() {
         world.dispose();
         b2dr.dispose();
+        hud.dispose();
     }
 
     public InputHandler getInputHandler() { return inputHandler; }

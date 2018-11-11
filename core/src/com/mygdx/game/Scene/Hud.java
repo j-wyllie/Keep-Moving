@@ -1,6 +1,8 @@
 package com.mygdx.game.Scene;
 
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
@@ -14,21 +16,22 @@ public class Hud implements Disposable {
     public Stage stage;
     private Viewport viewport;
 
-    private Integer score;
+    private Float score;
     private Label scoreLabel;
 
     public Hud(SpriteBatch sb) {
-        score = 0;
-
         viewport = new FitViewport(ZombieTrain.V_WIDTH, ZombieTrain.V_HEIGHT, new OrthographicCamera());
         stage = new Stage(viewport, sb);
+
+        score = 0f;
+        scoreLabel = new Label(String.valueOf(score.intValue()), new Label.LabelStyle(new BitmapFont(), Color.BLUE));
 
         stage.addActor(scoreLabel);
     }
 
     public void update(float dt) {
-        score += (int) dt / 1000;
-        scoreLabel.setText(String.valueOf(score));
+        score += dt;
+        scoreLabel.setText(String.valueOf(score.intValue()));
     }
 
     @Override
