@@ -37,7 +37,7 @@ public class PlayScreen implements Screen {
     // sprite variables
     private Player mainPlayer;
     private ArrayList<Zombie> zombies;
-    private long lastSpawnTime = 0;
+    private long lastSpawnTime;
 
     public PlayScreen(ZombieTrain game) {
         this.game = game;
@@ -104,6 +104,7 @@ public class PlayScreen implements Screen {
         // renderer our Box2DDebugLines
         b2dr.render(world, gameCam.combined);
 
+        // draw score Heads Up Display
         hud.stage.draw();
 
         // draw sprites

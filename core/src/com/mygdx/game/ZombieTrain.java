@@ -21,7 +21,7 @@ public class ZombieTrain extends Game {
 
 	public SpriteBatch batch;
 
-	
+
 	@Override
 	public void create () {
 		batch = new SpriteBatch();

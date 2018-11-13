@@ -1,14 +1,12 @@
 package com.mygdx.game.tool;
 
-import com.badlogic.gdx.Game;
 import com.badlogic.gdx.physics.box2d.Contact;
 import com.badlogic.gdx.physics.box2d.ContactImpulse;
 import com.badlogic.gdx.physics.box2d.ContactListener;
 import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.Manifold;
 import com.mygdx.game.ZombieTrain;
-import com.mygdx.game.screen.EndScreen;
-import com.mygdx.game.sprite.Zombie;
+import com.mygdx.game.screen.MenuScreen;
 
 public class WorldContactListener implements ContactListener {
     private ZombieTrain game;
@@ -26,7 +24,7 @@ public class WorldContactListener implements ContactListener {
 
         switch (cDef) {
             case ZombieTrain.PLAYER_COLLISION_BIT | ZombieTrain.ZOMBIE_COLLISION_BIT:
-                game.setScreen(new EndScreen(game));
+                game.setScreen(new MenuScreen(game));
         }
     }
 
