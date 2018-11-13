@@ -2,6 +2,7 @@ package com.mygdx.game.screen;
 
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.World;
@@ -38,6 +39,7 @@ public class PlayScreen implements Screen {
     private Player mainPlayer;
     private ArrayList<Zombie> zombies;
     private long lastSpawnTime;
+    private Texture backGround;
 
     public PlayScreen(ZombieTrain game) {
         this.game = game;
@@ -70,6 +72,9 @@ public class PlayScreen implements Screen {
             zombies.add(new Zombie(this));
         }
         lastSpawnTime = TimeUtils.nanoTime();
+
+        // load background
+        backGround = new Texture("plain_blue.png");
     }
 
     @Override
@@ -83,6 +88,7 @@ public class PlayScreen implements Screen {
         world.step(1 / 60f, 6, 2);
 
         // update game timer
+        hud.setScore((float) zombies.size() - NUM_START_ZOMBIES);
         hud.update(dt);
 
         // spawning new zombies
@@ -95,7 +101,8 @@ public class PlayScreen implements Screen {
         for (Zombie zombie : zombies) {
             zombie.update(dt, mainPlayer.getOriginBasedPos());
         }
-    }
+
+   }
 
     @Override
     public void render(float dt) {
@@ -104,17 +111,22 @@ public class PlayScreen implements Screen {
         // renderer our Box2DDebugLines
         b2dr.render(world, gameCam.combined);
 
-        // draw score Heads Up Display
-        hud.stage.draw();
+
 
         // draw sprites
         game.batch.setProjectionMatrix(gameCam.combined);
         game.batch.begin();
+            // draw background
+            game.batch.draw(backGround, 0, 0);
+
             mainPlayer.draw(game.batch);
             for (Zombie zombie : zombies) {
                 zombie.draw(game.batch);
             }
         game.batch.end();
+
+        // draw score Heads Up Display
+        hud.stage.draw();
     }
 
     @Override

@@ -31,12 +31,12 @@ public class Hud implements Disposable {
         scoreLabel = new Label(String.valueOf(score.intValue()), new Label.LabelStyle(new BitmapFont(), Color.GOLD));
         scoreLabel.setPosition(SCORE_POS.x, SCORE_POS.y);
         scoreLabel.setFontScale(2);
+        scoreLabel.setAlignment(Align.center);
 
         stage.addActor(scoreLabel);
     }
 
     public void update(float dt) {
-        score += dt;
         scoreLabel.setText(String.valueOf(score.intValue()));
 
         if (score > highScore) {
@@ -51,5 +51,9 @@ public class Hud implements Disposable {
 
     public static int getHighScore() {
         return highScore.intValue();
+    }
+
+    public void setScore(Float score) {
+        this.score = score;
     }
 }

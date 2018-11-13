@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.physics.box2d.World;
+import com.mygdx.game.screen.MenuScreen;
 import com.mygdx.game.screen.PlayScreen;
 
 import org.omg.PortableInterceptor.SYSTEM_EXCEPTION;
@@ -25,7 +26,7 @@ public class ZombieTrain extends Game {
 	@Override
 	public void create () {
 		batch = new SpriteBatch();
-        setScreen(new PlayScreen(this));
+        setScreen(new MenuScreen(this));
 	}
 
 	@Override

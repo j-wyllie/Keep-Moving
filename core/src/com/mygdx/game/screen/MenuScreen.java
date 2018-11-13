@@ -4,10 +4,12 @@ package com.mygdx.game.screen;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.mygdx.game.Scene.Hud;
@@ -21,8 +23,13 @@ public class MenuScreen implements Screen {
     private Stage stage;
     private Viewport viewport;
 
-    private final Vector2 SCORE_POS = new Vector2(ZombieTrain.V_WIDTH / 2, ZombieTrain.V_HEIGHT - 60);
+    private final Vector2 SCORE_POS = new Vector2(ZombieTrain.V_WIDTH / 2, ZombieTrain.V_HEIGHT - 200);
     private Label highScoreLabel;
+
+    private final String INSTRUCTION_TEXT = "tap to play\n\nhigh score";
+    private final Vector2 TEXT_POS = new Vector2(ZombieTrain.V_WIDTH / 2 - 40, ZombieTrain.V_HEIGHT - 170);
+    private Label instructionText;
+
 
     public MenuScreen(ZombieTrain game) {
         this.game = game;
@@ -34,7 +41,12 @@ public class MenuScreen implements Screen {
         highScoreLabel.setPosition(SCORE_POS.x, SCORE_POS.y);
         highScoreLabel.setFontScale(2);
 
+        instructionText = new Label(INSTRUCTION_TEXT, new Label.LabelStyle(new BitmapFont(), Color.GOLD));
+        instructionText.setPosition(TEXT_POS.x, TEXT_POS.y);
+        instructionText.setAlignment(Align.center);
+
         stage.addActor(highScoreLabel);
+        stage.addActor(instructionText);
     }
 
     @Override
