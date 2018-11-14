@@ -22,8 +22,8 @@ public abstract class Agent extends Sprite {
     private Vector2 startPos = new Vector2(ZombieTrain.V_WIDTH / 2, ZombieTrain.V_HEIGHT / 2);
     private Vector2 targetPos = new Vector2(ZombieTrain.V_WIDTH / 2, ZombieTrain.V_HEIGHT / 2);
 
-    protected World world;
-    protected Body b2body;
+    private World world;
+    private Body b2body;
     protected Vector2 velocity;
 
     public Agent(PlayScreen playScreen, String texturePath, short collisionBit) {
@@ -61,12 +61,12 @@ public abstract class Agent extends Sprite {
 
     protected void moveTowardsTarget(float dt) {
         Vector2 toTarget = new Vector2(targetPos.x - getOriginBasedX(), targetPos.y - getOriginBasedY());
-        if (toTarget.len() > 0.5) {
+//        if (toTarget.len() > 0) {
             toTarget.nor();
             setOriginBasedPosition(b2body.getPosition().x, b2body.getPosition().y);
             setRotation(toTarget.angle() - 90);
             b2body.setLinearVelocity(toTarget.scl(moveSpeed));
-        }
+    //    }
     }
 
     protected void setMoveSpeed(float moveSpeed) { this.moveSpeed = moveSpeed; }

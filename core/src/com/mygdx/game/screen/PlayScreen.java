@@ -109,15 +109,13 @@ public class PlayScreen implements Screen {
         update(dt);
 
         // renderer our Box2DDebugLines
-        b2dr.render(world, gameCam.combined);
-
-
+        //b2dr.render(world, gameCam.combined);
 
         // draw sprites
         game.batch.setProjectionMatrix(gameCam.combined);
         game.batch.begin();
             // draw background
-            game.batch.draw(backGround, 0, 0);
+           // game.batch.draw(backGround, 0, 0);
 
             mainPlayer.draw(game.batch);
             for (Zombie zombie : zombies) {

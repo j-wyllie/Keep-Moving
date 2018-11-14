@@ -9,14 +9,13 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.Disposable;
-import com.badlogic.gdx.utils.Scaling;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.mygdx.game.ZombieTrain;
 
 public class Hud implements Disposable {
-    private final Vector2 SCORE_POS = new Vector2(ZombieTrain.V_WIDTH / 2, ZombieTrain.V_HEIGHT - 40);
-    private static Integer highScore = 0;
+    private final Vector2 SCORE_POS = new Vector2(ZombieTrain.V_WIDTH / 2 - 10, ZombieTrain.V_HEIGHT - 40);
+    private static Integer localHighScore = 0;
 
     public Stage stage;
     private Viewport viewport;
@@ -31,7 +30,6 @@ public class Hud implements Disposable {
         scoreLabel = new Label(String.valueOf(score.intValue()), new Label.LabelStyle(new BitmapFont(), Color.GOLD));
         scoreLabel.setPosition(SCORE_POS.x, SCORE_POS.y);
         scoreLabel.setFontScale(2);
-        scoreLabel.setAlignment(Align.center);
 
         stage.addActor(scoreLabel);
     }
@@ -39,8 +37,8 @@ public class Hud implements Disposable {
     public void update(float dt) {
         scoreLabel.setText(String.valueOf(score.intValue()));
 
-        if (score > highScore) {
-            highScore = score.intValue();
+        if (score > localHighScore) {
+            localHighScore = score.intValue();
         }
     }
 
@@ -49,8 +47,8 @@ public class Hud implements Disposable {
         stage.dispose();
     }
 
-    public static int getHighScore() {
-        return highScore.intValue();
+    public static int getLocalHighScore() {
+        return localHighScore.intValue();
     }
 
     public void setScore(Float score) {
