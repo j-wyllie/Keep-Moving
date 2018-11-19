@@ -8,6 +8,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.physics.box2d.World;
 import com.mygdx.game.screen.MenuScreen;
 import com.mygdx.game.screen.PlayScreen;
+import com.mygdx.game.tool.AdHandler;
 
 import org.omg.PortableInterceptor.SYSTEM_EXCEPTION;
 
@@ -21,7 +22,14 @@ public class ZombieTrain extends Game {
 	//public static final int PPM = 100;
 
 	public SpriteBatch batch;
+    private AdHandler adHandler;
 
+    public ZombieTrain() {}
+
+	public ZombieTrain(AdHandler adHandler) {
+	    this.adHandler = adHandler;
+	    adHandler.showAds(true);
+    }
 
 	@Override
 	public void create () {

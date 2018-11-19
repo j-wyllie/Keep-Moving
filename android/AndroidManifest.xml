@@ -2,7 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.mygdx.game" >
 
-    <uses-sdk android:minSdkVersion="9" android:targetSdkVersion="27" />
+    <uses-sdk android:minSdkVersion="14" android:targetSdkVersion="27" />
 
     <application
         android:allowBackup="true"
@@ -18,7 +18,14 @@
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+
         </activity>
+
+        <meta-data
+            android:name="com.google.android.gms.ads.APPLICATION_ID"
+            android:value="ca-app-pub-9721517265393915~9208987096"/>
     </application>
+
+    <uses-permission android:name="android.permission.INTERNET" />
 
 </manifest>

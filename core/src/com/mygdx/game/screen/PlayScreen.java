@@ -74,7 +74,7 @@ public class PlayScreen implements Screen {
         lastSpawnTime = TimeUtils.nanoTime();
 
         // load background
-        backGround = new Texture("plain_blue.png");
+//        backGround = new Texture("plain_blue.png");
     }
 
     @Override

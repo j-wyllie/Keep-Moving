@@ -16,6 +16,9 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 import com.mygdx.game.Scene.Hud;
 import com.mygdx.game.ZombieTrain;
 
+
+import sun.rmi.runtime.Log;
+
 import static com.mygdx.game.tool.InputHandler.isTouched;
 
 public class MenuScreen implements Screen {
@@ -24,7 +27,7 @@ public class MenuScreen implements Screen {
     private Viewport viewport;
     private FileHandle file;
 
-    private Integer allTimeHighScore;
+    private Integer allTimeHighScore = 0;
     private final Vector2 SCORE_POS = new Vector2(ZombieTrain.V_WIDTH / 2 - 10, ZombieTrain.V_HEIGHT - 200);
     private Label highScoreLabel;
 
@@ -39,8 +42,15 @@ public class MenuScreen implements Screen {
         viewport = new FitViewport(ZombieTrain.V_WIDTH, ZombieTrain.V_HEIGHT, new OrthographicCamera());
         stage = new Stage(viewport, game.batch);
 
-        file = Gdx.files.local("score.txt");
-        allTimeHighScore = Integer.valueOf(file.readString());
+        file = Gdx.files.local("data/score.txt");
+        Gdx.app.log("AssetPath", file.file().getAbsolutePath());
+        if (Gdx.files.isLocalStorageAvailable() && file.exists()) {
+            try {
+                allTimeHighScore = Integer.valueOf(file.readString());
+            } catch (NumberFormatException exception) {
+                allTimeHighScore = 0;
+            }
+        }
 
         highScoreLabel = new Label(String.valueOf(allTimeHighScore), new Label.LabelStyle(new BitmapFont(), Color.GOLD));
         highScoreLabel.setPosition(SCORE_POS.x, SCORE_POS.y);
