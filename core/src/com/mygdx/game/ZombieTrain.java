@@ -22,19 +22,21 @@ public class ZombieTrain extends Game {
 	//public static final int PPM = 100;
 
 	public SpriteBatch batch;
-    private AdHandler adHandler;
+    public static AdHandler adHandler;
 
     public ZombieTrain() {}
 
 	public ZombieTrain(AdHandler adHandler) {
 	    this.adHandler = adHandler;
-	    adHandler.showAds(true);
+
     }
 
 	@Override
 	public void create () {
 		batch = new SpriteBatch();
         setScreen(new MenuScreen(this));
+
+		adHandler.showAds(true);
 	}
 
 	@Override

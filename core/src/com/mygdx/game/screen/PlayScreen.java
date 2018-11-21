@@ -79,7 +79,7 @@ public class PlayScreen implements Screen {
 
     @Override
     public void show() {
-
+        ZombieTrain.adHandler.showAds(false);
     }
 
     private void update(float dt) {
@@ -139,7 +139,6 @@ public class PlayScreen implements Screen {
 
     @Override
     public void resume() {
-
     }
 
     @Override

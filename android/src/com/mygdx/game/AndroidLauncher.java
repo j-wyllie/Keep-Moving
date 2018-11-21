@@ -40,10 +40,10 @@ public class AndroidLauncher extends AndroidApplication implements AdHandler {
 
 	@Override
 	protected void onCreate (Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
 		//initialize(new ZombieTrain(), config);
         MobileAds.initialize(this, "ca-app-pub-9721517265393915~9208987096");
-
-        super.onCreate(savedInstanceState);
 
         RelativeLayout layout = new RelativeLayout(this);
         AndroidApplicationConfiguration config = new AndroidApplicationConfiguration();
@@ -51,6 +51,7 @@ public class AndroidLauncher extends AndroidApplication implements AdHandler {
         layout.addView(gameView);
 
         adView = new AdView(this);
+        adView.setVisibility(View.VISIBLE);
         adView.setAdListener(new AdListener() {
             @Override
             public void onAdLoaded() {
@@ -62,7 +63,7 @@ public class AndroidLauncher extends AndroidApplication implements AdHandler {
         });
         adView.setAdSize(AdSize.SMART_BANNER);
         //http://www.google.com/admob
-        adView.setAdUnitId("ca-app-pub-9721517265393915/5816536996");
+        adView.setAdUnitId("ca-app-pub-3940256099942544/6300978111");
 
         AdRequest.Builder builder = new AdRequest.Builder();
         //run once before uncommenting the following line. Get TEST device ID from the logcat logs.

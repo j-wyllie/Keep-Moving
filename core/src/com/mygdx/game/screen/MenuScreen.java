@@ -43,7 +43,6 @@ public class MenuScreen implements Screen {
         stage = new Stage(viewport, game.batch);
 
         file = Gdx.files.local("data/score.txt");
-        Gdx.app.log("AssetPath", file.file().getAbsolutePath());
         if (Gdx.files.isLocalStorageAvailable() && file.exists()) {
             try {
                 allTimeHighScore = Integer.valueOf(file.readString());
@@ -66,7 +65,7 @@ public class MenuScreen implements Screen {
 
     @Override
     public void show() {
-
+        ZombieTrain.adHandler.showAds(true);
     }
 
     private void update(float dt) {
@@ -102,7 +101,7 @@ public class MenuScreen implements Screen {
 
     @Override
     public void resume() {
-
+        //ZombieTrain.adHandler.showAds(true);
     }
 
     @Override
