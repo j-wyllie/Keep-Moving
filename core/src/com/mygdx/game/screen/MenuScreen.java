@@ -6,6 +6,7 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -24,8 +25,11 @@ import static com.mygdx.game.tool.InputHandler.isTouched;
 public class MenuScreen implements Screen {
     private ZombieTrain game;
     private Stage stage;
-    private Viewport viewport;
+    private OrthographicCamera gameCam;
+    private Viewport gamePort;
     private FileHandle file;
+
+    private Texture background;
 
     private Integer allTimeHighScore = 0;
     private final Vector2 SCORE_POS = new Vector2(ZombieTrain.V_WIDTH / 2 - 10, ZombieTrain.V_HEIGHT - 200);
@@ -39,8 +43,17 @@ public class MenuScreen implements Screen {
     public MenuScreen(ZombieTrain game) {
         this.game = game;
 
-        viewport = new FitViewport(ZombieTrain.V_WIDTH, ZombieTrain.V_HEIGHT, new OrthographicCamera());
-        stage = new Stage(viewport, game.batch);
+        // create cam used to follow the player through cam world
+        gameCam = new OrthographicCamera();
+
+        // create a FitViewport to maintain virtual aspect ratio despite screen size
+        gamePort = new FitViewport(1080, 1920, gameCam);
+
+        // initially set our gamcam to be centered correctly at the start of of map
+        gameCam.position.set(gamePort.getWorldWidth() / 2, gamePort.getWorldHeight() / 2, 0);
+        stage = new Stage(gamePort, game.batch);
+
+        background = new Texture("menu_background_highres.png");
 
         file = Gdx.files.local("data/score.txt");
         if (Gdx.files.isLocalStorageAvailable() && file.exists()) {
@@ -51,7 +64,13 @@ public class MenuScreen implements Screen {
             }
         }
 
+//        Label.LabelStyle label1Style = new Label.LabelStyle();
+//        BitmapFont myFont = new BitmapFont(Gdx.files.internal("basic_font.fnt"));
+//        label1Style.font = myFont;
+//        label1Style.fontColor = Color.GOLD;
+
         highScoreLabel = new Label(String.valueOf(allTimeHighScore), new Label.LabelStyle(new BitmapFont(), Color.GOLD));
+        highScoreLabel.setSize(ZombieTrain.V_WIDTH, 20);
         highScoreLabel.setPosition(SCORE_POS.x, SCORE_POS.y);
         highScoreLabel.setFontScale(2);
 
@@ -85,6 +104,11 @@ public class MenuScreen implements Screen {
     @Override
     public void render(float dt) {
         update(dt);
+
+        game.batch.setProjectionMatrix(gameCam.combined);
+        game.batch.begin();
+            game.batch.draw(background, 0, 0);
+        game.batch.end();
 
         stage.draw();
     }

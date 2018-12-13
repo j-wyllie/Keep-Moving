@@ -41,7 +41,7 @@ public class ZombieTrain extends Game {
 
 	@Override
 	public void render () {
-		Gdx.gl.glClearColor(0.9f, 0.9f, 0.9f, 1);
+		Gdx.gl.glClearColor(0.8862745098f, 0.8431372549f, 0.8862745098f, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 		super.render();
 	}

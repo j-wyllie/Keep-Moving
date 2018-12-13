@@ -12,8 +12,8 @@ import java.util.Random;
 
 public class Zombie extends Agent {
     private final int ZOMBIE_POS_VARIANCE = ZombieTrain.V_WIDTH + ZombieTrain.V_HEIGHT;
-    private final int MOVE_SPEED_VARIANCE = 25;
-    private final int MOVE_SPEED_MIN = 45;
+    private final int MOVE_SPEED_VARIANCE = 50;
+    private final int MOVE_SPEED_MIN = 20;
 
     public Zombie(PlayScreen playScreen) {
         super(playScreen, "zombie.png", ZombieTrain.ZOMBIE_COLLISION_BIT);
