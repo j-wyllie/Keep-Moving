@@ -17,7 +17,7 @@ public abstract class Agent extends Sprite {
     private PlayScreen playScreen;
     private Texture agentImage;
     private float moveSpeed = 100;
-    private final int HIT_BOX_RADIUS = 4;
+    private final int HIT_BOX_RADIUS = 5;
     private short collisionBit = 0;
     private Vector2 startPos = new Vector2(ZombieTrain.V_WIDTH / 2, ZombieTrain.V_HEIGHT / 2);
     private Vector2 targetPos = new Vector2(ZombieTrain.V_WIDTH / 2, ZombieTrain.V_HEIGHT / 2);

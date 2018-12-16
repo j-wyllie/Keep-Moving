@@ -31,12 +31,15 @@ public class MenuScreen implements Screen {
 
     private Texture background;
 
+    private static final Float MENU_WIDTH =1080f;
+    private static final Float MENU_HEIGHT = 1920f;
+
     private Integer allTimeHighScore = 0;
-    private final Vector2 SCORE_POS = new Vector2(ZombieTrain.V_WIDTH / 2 - 10, ZombieTrain.V_HEIGHT - 200);
+    private final Vector2 SCORE_POS = new Vector2(MENU_WIDTH / 2 - 100, MENU_HEIGHT - 800);
     private Label highScoreLabel;
 
-    private final String INSTRUCTION_TEXT = "tap to play\n\nhigh score";
-    private final Vector2 TEXT_POS = new Vector2(ZombieTrain.V_WIDTH / 2 - 35, ZombieTrain.V_HEIGHT - 170);
+    private final String INSTRUCTION_TEXT = "tap to play\nhigh score";
+    private final Vector2 TEXT_POS = new Vector2(MENU_WIDTH / 2 - 350, MENU_HEIGHT - 680);
     private Label instructionText;
 
 
@@ -64,17 +67,17 @@ public class MenuScreen implements Screen {
             }
         }
 
-//        Label.LabelStyle label1Style = new Label.LabelStyle();
-//        BitmapFont myFont = new BitmapFont(Gdx.files.internal("basic_font.fnt"));
-//        label1Style.font = myFont;
-//        label1Style.fontColor = Color.GOLD;
+        Label.LabelStyle deannaLabelStyle = new Label.LabelStyle();
+        BitmapFont myFont = new BitmapFont(Gdx.files.internal("*.fnt"));
+        deannaLabelStyle.font = myFont;
+        deannaLabelStyle.fontColor = Color.GOLD;
 
-        highScoreLabel = new Label(String.valueOf(allTimeHighScore), new Label.LabelStyle(new BitmapFont(), Color.GOLD));
-        highScoreLabel.setSize(ZombieTrain.V_WIDTH, 20);
+        highScoreLabel = new Label(String.valueOf(allTimeHighScore), deannaLabelStyle);
+        //highScoreLabel.setSize(MENU_WIDTH, 100);
         highScoreLabel.setPosition(SCORE_POS.x, SCORE_POS.y);
-        highScoreLabel.setFontScale(2);
+        //highScoreLabel.setFontScale(2);
 
-        instructionText = new Label(INSTRUCTION_TEXT, new Label.LabelStyle(new BitmapFont(), Color.GOLD));
+        instructionText = new Label(INSTRUCTION_TEXT, deannaLabelStyle);
         instructionText.setPosition(TEXT_POS.x, TEXT_POS.y);
         instructionText.setAlignment(Align.center);
 

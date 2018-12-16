@@ -1,5 +1,6 @@
 package com.mygdx.game.Scene;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
@@ -14,7 +15,7 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 import com.mygdx.game.ZombieTrain;
 
 public class Hud implements Disposable {
-    private final Vector2 SCORE_POS = new Vector2(ZombieTrain.V_WIDTH / 2 - 10, ZombieTrain.V_HEIGHT - 40);
+    private final Vector2 SCORE_POS = new Vector2(ZombieTrain.V_WIDTH / 2 - 12, ZombieTrain.V_HEIGHT - 125);
     private static Integer localHighScore = 0;
 
     public Stage stage;
@@ -27,9 +28,14 @@ public class Hud implements Disposable {
         viewport = new FitViewport(ZombieTrain.V_WIDTH, ZombieTrain.V_HEIGHT, new OrthographicCamera());
         stage = new Stage(viewport, sb);
 
-        scoreLabel = new Label(String.valueOf(score.intValue()), new Label.LabelStyle(new BitmapFont(), Color.GOLD));
+        Label.LabelStyle deannaLabelStyle = new Label.LabelStyle();
+        BitmapFont myFont = new BitmapFont(Gdx.files.internal("*.fnt"));
+        deannaLabelStyle.font = myFont;
+        deannaLabelStyle.fontColor = Color.GOLD;
+
+        scoreLabel = new Label(String.valueOf(score.intValue()), deannaLabelStyle);
         scoreLabel.setPosition(SCORE_POS.x, SCORE_POS.y);
-        scoreLabel.setFontScale(2);
+        scoreLabel.setFontScale(0.25f);
 
         stage.addActor(scoreLabel);
     }
