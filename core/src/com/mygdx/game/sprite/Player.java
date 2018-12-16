@@ -10,7 +10,7 @@ public class Player extends Agent {
     private  PlayScreen playScreen;
 
     public Player(PlayScreen playScreen) {
-        super(playScreen, "player.png", ZombieTrain.PLAYER_COLLISION_BIT);
+        super(playScreen, "brain.png", ZombieTrain.PLAYER_COLLISION_BIT);
         this.playScreen = playScreen;
 
         setStartPos(genStartPos());

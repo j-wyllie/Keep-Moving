@@ -61,12 +61,14 @@ public abstract class Agent extends Sprite {
 
     protected void moveTowardsTarget(float dt) {
         Vector2 toTarget = new Vector2(targetPos.x - getOriginBasedX(), targetPos.y - getOriginBasedY());
-//        if (toTarget.len() > 0) {
+        if (toTarget.len() > 0.5) {
             toTarget.nor();
             setOriginBasedPosition(b2body.getPosition().x, b2body.getPosition().y);
             setRotation(toTarget.angle() - 90);
             b2body.setLinearVelocity(toTarget.scl(moveSpeed));
-    //    }
+        } else {
+            b2body.setLinearVelocity(Vector2.Zero);
+        }
     }
 
     protected void setMoveSpeed(float moveSpeed) { this.moveSpeed = moveSpeed; }
