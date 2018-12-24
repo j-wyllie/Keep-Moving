@@ -19,6 +19,7 @@ public class ZombieTrain extends Game {
 
 	public static final short PLAYER_COLLISION_BIT = 2;
 	public static final short ZOMBIE_COLLISION_BIT = 4;
+	public static final short TRAP_COLLISION_BIT = 8;
 	//public static final int PPM = 100;
 
 	public SpriteBatch batch;

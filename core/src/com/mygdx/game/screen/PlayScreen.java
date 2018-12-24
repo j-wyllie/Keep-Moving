@@ -11,6 +11,7 @@ import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.mygdx.game.Scene.Hud;
 import com.mygdx.game.ZombieTrain;
+import com.mygdx.game.sprite.TrapDoor;
 import com.mygdx.game.tool.B2WorldCreator;
 import com.mygdx.game.tool.InputHandler;
 import com.mygdx.game.sprite.Player;
@@ -37,6 +38,7 @@ public class PlayScreen implements Screen {
 
     // sprite variables
     private Player mainPlayer;
+    private TrapDoor trapDoor;
     private ArrayList<Zombie> zombies;
     private long lastSpawnTime;
     private Texture backGround;
@@ -67,6 +69,7 @@ public class PlayScreen implements Screen {
 
         // generate sprites
         this.mainPlayer = new Player(this);
+        this.trapDoor = new TrapDoor(this);
         this.zombies = new ArrayList<Zombie>();
         for (int i = 0; i < NUM_START_ZOMBIES; i++) {
             zombies.add(new Zombie(this));
@@ -118,6 +121,7 @@ public class PlayScreen implements Screen {
            // game.batch.draw(backGround, 0, 0);
 
             mainPlayer.draw(game.batch);
+            trapDoor.draw(game.batch);
             for (Zombie zombie : zombies) {
                 zombie.draw(game.batch);
             }
