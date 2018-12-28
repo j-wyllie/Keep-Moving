@@ -18,6 +18,8 @@ public class Zombie extends Agent {
     public Zombie(PlayScreen playScreen) {
         super(playScreen, "zombie.png", ZombieTrain.ZOMBIE_COLLISION_BIT);
 
+        b2body.setUserData(this);
+
         setMoveSpeed(genRandMoveSpeed());
         setStartPos(genStartPos());
     }
@@ -40,6 +42,7 @@ public class Zombie extends Agent {
         Vector2 pos;
         int randPos = MathUtils.random(0, ZOMBIE_POS_VARIANCE);
         boolean isFarSide = MathUtils.randomBoolean();
+
         // randPos lies on the virtual
         if (randPos >= ZombieTrain.V_WIDTH) {
             randPos -= ZombieTrain.V_WIDTH;
@@ -56,5 +59,9 @@ public class Zombie extends Agent {
             }
         }
         return pos;
+    }
+
+    public void dispose() {
+        super.dispose();
     }
 }

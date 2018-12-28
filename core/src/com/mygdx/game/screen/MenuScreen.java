@@ -70,7 +70,7 @@ public class MenuScreen implements Screen {
         Label.LabelStyle deannaLabelStyle = new Label.LabelStyle();
         BitmapFont myFont = new BitmapFont(Gdx.files.internal("*.fnt"));
         deannaLabelStyle.font = myFont;
-        deannaLabelStyle.fontColor = Color.GOLD;
+        deannaLabelStyle.fontColor = Color.GOLDENROD;
 
         highScoreLabel = new Label(String.valueOf(allTimeHighScore), deannaLabelStyle);
         //highScoreLabel.setSize(MENU_WIDTH, 100);

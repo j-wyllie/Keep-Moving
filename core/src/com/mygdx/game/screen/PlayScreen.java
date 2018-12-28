@@ -19,6 +19,8 @@ import com.mygdx.game.sprite.Zombie;
 import com.mygdx.game.tool.WorldContactListener;
 
 import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.ListIterator;
 
 public class PlayScreen implements Screen {
     private static final long SPAWN_TIME_MILLIS = 1000;
@@ -35,13 +37,17 @@ public class PlayScreen implements Screen {
     private World world;
     private Box2DDebugRenderer b2dr;
     private B2WorldCreator creator;
+    private ArrayList<Zombie> zombiesToDispose;
 
     // sprite variables
     private Player mainPlayer;
     private TrapDoor trapDoor;
     private ArrayList<Zombie> zombies;
+    private Iterator<Zombie> zombieIter;
     private long lastSpawnTime;
     private Texture backGround;
+
+    private Float totalNumberOfZombiesSpawned = (float) NUM_START_ZOMBIES;
 
     public PlayScreen(ZombieTrain game) {
         this.game = game;
@@ -65,12 +71,14 @@ public class PlayScreen implements Screen {
         world = new World(new Vector2(0, 0), true);
         b2dr = new Box2DDebugRenderer();
         creator = new B2WorldCreator(this);
-        world.setContactListener(new WorldContactListener(game));
+        world.setContactListener(new WorldContactListener(game, this));
+        zombiesToDispose = new ArrayList<Zombie>();
 
         // generate sprites
         this.mainPlayer = new Player(this);
         this.trapDoor = new TrapDoor(this);
         this.zombies = new ArrayList<Zombie>();
+        this.zombieIter = this.zombies.iterator();
         for (int i = 0; i < NUM_START_ZOMBIES; i++) {
             zombies.add(new Zombie(this));
         }
@@ -90,21 +98,35 @@ public class PlayScreen implements Screen {
         gameCam.update();
         world.step(1 / 60f, 6, 2);
 
+        // dispose of box2d objects
+        for (Zombie zombie : zombiesToDispose) {
+            zombie.dispose();
+        }
+        zombiesToDispose.clear();
+
         // update game timer
-        hud.setScore((float) zombies.size() - NUM_START_ZOMBIES);
+        hud.setScore(totalNumberOfZombiesSpawned - NUM_START_ZOMBIES);
         hud.update(dt);
 
         // spawning new zombies
         if (TimeUtils.nanoTime() - lastSpawnTime > SPAWN_TIME_MILLIS * 1000000) {
             lastSpawnTime = TimeUtils.nanoTime();
             zombies.add(new Zombie(this));
+            totalNumberOfZombiesSpawned++;
         }
 
         mainPlayer.update(dt);
+        trapDoor.update(dt);
+
         for (Zombie zombie : zombies) {
             zombie.update(dt, mainPlayer.getOriginBasedPos());
         }
 
+   }
+
+   public void removeZombie(Zombie zombie) {
+        zombies.remove(zombie);
+        zombiesToDispose.add(zombie);
    }
 
     @Override
@@ -112,13 +134,11 @@ public class PlayScreen implements Screen {
         update(dt);
 
         // renderer our Box2DDebugLines
-        //b2dr.render(world, gameCam.combined);
+        b2dr.render(world, gameCam.combined);
 
         // draw sprites
         game.batch.setProjectionMatrix(gameCam.combined);
         game.batch.begin();
-            // draw background
-           // game.batch.draw(backGround, 0, 0);
 
             mainPlayer.draw(game.batch);
             trapDoor.draw(game.batch);

@@ -31,7 +31,7 @@ public class Hud implements Disposable {
         Label.LabelStyle deannaLabelStyle = new Label.LabelStyle();
         BitmapFont myFont = new BitmapFont(Gdx.files.internal("*.fnt"));
         deannaLabelStyle.font = myFont;
-        deannaLabelStyle.fontColor = Color.GOLD;
+        deannaLabelStyle.fontColor = Color.GOLDENROD;
 
         scoreLabel = new Label(String.valueOf(score.intValue()), deannaLabelStyle);
         scoreLabel.setPosition(SCORE_POS.x, SCORE_POS.y);
