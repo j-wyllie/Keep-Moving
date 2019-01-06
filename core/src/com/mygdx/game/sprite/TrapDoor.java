@@ -18,7 +18,7 @@ import com.mygdx.game.screen.PlayScreen;
 
 public class TrapDoor extends Sprite {
     private final static float HIDE_TIME_MILLIS = 5000;
-    private final static float SPAWN_TIME_MILLIS = 5000;
+    private final static float SPAWN_TIME_MILLIS = 6500;
     private final static float OPEN_TIME_MILLIS = 400;
     private final static float SPAWN_POSITION_MARGIN = 7;
     private final static Integer FRAME_COLS = 4;

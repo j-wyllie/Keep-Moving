@@ -63,7 +63,7 @@ public class AndroidLauncher extends AndroidApplication implements AdHandler {
         });
         adView.setAdSize(AdSize.SMART_BANNER);
         //http://www.google.com/admob
-        adView.setAdUnitId("ca-app-pub-3940256099942544/6300978111");
+        adView.setAdUnitId("ca-app-pub-9721517265393915/5816536996");
 
         AdRequest.Builder builder = new AdRequest.Builder();
         //run once before uncommenting the following line. Get TEST device ID from the logcat logs.
