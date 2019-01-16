@@ -1,7 +1,7 @@
 # Zombtrain
 A simple zombie game using LibGDX
 
-Can be found on the app store here:
+Can be found on the google play store here:
 https://play.google.com/store/apps/details?id=com.joshuawyllie.game
 
 
