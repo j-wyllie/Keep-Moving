@@ -7,24 +7,26 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.TimeUtils;
-import com.badlogic.gdx.utils.viewport.FitViewport;
+import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.mygdx.game.Scene.Hud;
 import com.mygdx.game.ZombieTrain;
+import com.mygdx.game.sprite.Player;
 import com.mygdx.game.sprite.TrapDoor;
+import com.mygdx.game.sprite.Zombie;
 import com.mygdx.game.tool.B2WorldCreator;
 import com.mygdx.game.tool.InputHandler;
-import com.mygdx.game.sprite.Player;
-import com.mygdx.game.sprite.Zombie;
 import com.mygdx.game.tool.WorldContactListener;
 
 import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.ListIterator;
 
 public class PlayScreen implements Screen {
     private static final long SPAWN_TIME_MILLIS = 1000;
     private int NUM_START_ZOMBIES = 10;
+
+    private Float gameWidth = (float) ZombieTrain.V_INIT_WIDTH;
+    private Float gameHeight = (float) ZombieTrain.V_INIT_HEIGHT;
 
     public ZombieTrain game;
     private OrthographicCamera gameCam;
@@ -49,14 +51,15 @@ public class PlayScreen implements Screen {
 
     private Float totalNumberOfZombiesSpawned = (float) NUM_START_ZOMBIES;
 
-    public PlayScreen(ZombieTrain game) {
+    PlayScreen(ZombieTrain game) {
         this.game = game;
 
         // create cam used to follow the player through cam world
         gameCam = new OrthographicCamera();
 
         // create a FitViewport to maintain virtual aspect ratio despite screen size
-        gamePort = new FitViewport(ZombieTrain.V_WIDTH, ZombieTrain.V_HEIGHT, gameCam);
+        //gamePort = new FitViewport(ZombieTrain.V_WIDTH, ZombieTrain.V_HEIGHT, gameCam);
+        gamePort = new ExtendViewport(gameWidth, gameHeight, gameCam);
 
         // initially set our gamcam to be centered correctly at the start of of map
         gameCam.position.set(gamePort.getWorldWidth() / 2, gamePort.getWorldHeight() / 2, 0);
@@ -65,7 +68,7 @@ public class PlayScreen implements Screen {
         inputHandler = new InputHandler(gameCam);
 
         // create time HUD
-        hud = new Hud(game.batch);
+        hud = new Hud(game.batch, gamePort);
 
         // initialise box2d
         world = new World(new Vector2(0, 0), true);
@@ -85,18 +88,28 @@ public class PlayScreen implements Screen {
         lastSpawnTime = TimeUtils.nanoTime();
 
         // load background
-//        backGround = new Texture("plain_blue.png");
+        // backGround = new Texture("plain_blue.png");
+    }
+
+    public void setup() {
+        mainPlayer.setup();
+        trapDoor.setup();
+        for (Zombie zombie : zombies) {
+            zombie.setup();
+        }
     }
 
     @Override
     public void show() {
-        ZombieTrain.adHandler.showAds(false);
+//        ZombieTrain.adHandler.showAds(false);
     }
 
     private void update(float dt) {
         // update our gameCam with correct coordinates after changes
         gameCam.update();
         world.step(1 / 60f, 6, 2);
+        gameWidth = gamePort.getWorldWidth();
+        gameHeight = gamePort.getWorldHeight();
 
         // dispose of box2d objects
         for (Zombie zombie : zombiesToDispose) {
@@ -117,34 +130,31 @@ public class PlayScreen implements Screen {
 
         mainPlayer.update(dt);
         trapDoor.update(dt);
-
         for (Zombie zombie : zombies) {
             zombie.update(dt, mainPlayer.getOriginBasedPos());
         }
+    }
 
-   }
-
-   public void removeZombie(Zombie zombie) {
+    public void removeZombie(Zombie zombie) {
         zombies.remove(zombie);
         zombiesToDispose.add(zombie);
-   }
+    }
 
     @Override
     public void render(float dt) {
         update(dt);
 
         // renderer our Box2DDebugLines
-      //  b2dr.render(world, gameCam.combined);
+        //  b2dr.render(world, gameCam.combined);
 
         // draw sprites
         game.batch.setProjectionMatrix(gameCam.combined);
         game.batch.begin();
-
-            mainPlayer.draw(game.batch);
-            trapDoor.draw(game.batch);
-            for (Zombie zombie : zombies) {
-                zombie.draw(game.batch);
-            }
+        mainPlayer.draw(game.batch);
+        trapDoor.draw(game.batch);
+        for (Zombie zombie : zombies) {
+            zombie.draw(game.batch);
+        }
         game.batch.end();
 
         // draw score Heads Up Display
@@ -158,7 +168,6 @@ public class PlayScreen implements Screen {
 
     @Override
     public void pause() {
-
     }
 
     @Override
@@ -167,7 +176,6 @@ public class PlayScreen implements Screen {
 
     @Override
     public void hide() {
-
     }
 
     @Override
@@ -177,7 +185,19 @@ public class PlayScreen implements Screen {
         hud.dispose();
     }
 
-    public InputHandler getInputHandler() { return inputHandler; }
+    public InputHandler getInputHandler() {
+        return inputHandler;
+    }
 
-    public World getWorld() { return world; }
+    public World getWorld() {
+        return world;
+    }
+
+    public Float getGameWidth() {
+        return gameWidth;
+    }
+
+    public Float getGameHeight() {
+        return gameHeight;
+    }
 }

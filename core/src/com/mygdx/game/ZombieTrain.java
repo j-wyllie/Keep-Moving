@@ -3,52 +3,46 @@ package com.mygdx.game;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.physics.box2d.World;
 import com.mygdx.game.screen.MenuScreen;
-import com.mygdx.game.screen.PlayScreen;
 import com.mygdx.game.tool.AdHandler;
-
-import org.omg.PortableInterceptor.SYSTEM_EXCEPTION;
 
 public class ZombieTrain extends Game {
     // Virtual Screen size and Box2D Scale(Pixels Per Meter)
-	public static final int V_WIDTH = 270;//225;
-	public static final int V_HEIGHT = 480;
+    public static final int V_INIT_WIDTH = 270;//225;
+    public static final int V_INIT_HEIGHT = 480;
 
-	public static final short PLAYER_COLLISION_BIT = 2;
-	public static final short ZOMBIE_COLLISION_BIT = 4;
-	public static final short TRAP_COLLISION_BIT = 8;
-	//public static final int PPM = 100;
+    public static final short PLAYER_COLLISION_BIT = 2;
+    public static final short ZOMBIE_COLLISION_BIT = 4;
+    public static final short TRAP_COLLISION_BIT = 8;
+    //public static final int PPM = 100;
 
-	public SpriteBatch batch;
+    public SpriteBatch batch;
     public static AdHandler adHandler;
 
-    public ZombieTrain() {}
-
-	public ZombieTrain(AdHandler adHandler) {
-	    this.adHandler = adHandler;
-
+    public ZombieTrain() {
     }
 
-	@Override
-	public void create () {
-		batch = new SpriteBatch();
+    public ZombieTrain(AdHandler adHandler) {
+        this.adHandler = adHandler;
+    }
+
+    @Override
+    public void create() {
+        batch = new SpriteBatch();
         setScreen(new MenuScreen(this));
+//		adHandler.showAds(true);
+    }
 
-		adHandler.showAds(true);
-	}
+    @Override
+    public void render() {
+        Gdx.gl.glClearColor(0.8862745098f, 0.8431372549f, 0.8862745098f, 1);
+        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+        super.render();
+    }
 
-	@Override
-	public void render () {
-		Gdx.gl.glClearColor(0.8862745098f, 0.8431372549f, 0.8862745098f, 1);
-		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-		super.render();
-	}
-	
-	@Override
-	public void dispose () {
-		batch.dispose();
-	}
+    @Override
+    public void dispose() {
+        batch.dispose();
+    }
 }

@@ -8,7 +8,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 
 public class InputHandler implements InputProcessor {
-    Camera camera;
+    private Camera camera;
     private Vector3 tp;
     private boolean dragging;
 
@@ -73,10 +73,19 @@ public class InputHandler implements InputProcessor {
         return false;
     }
 
-    public Vector3 getTouchPoint() { return tp; }
+    public Vector3 getTouchPoint() {
+        return tp;
+    }
 
-    public float getX() { return tp.x; }
-    public float getY() { return tp.y; }
+    public float getX() {
+        return tp.x;
+    }
 
-    public static boolean isTouched() { return Gdx.input.isTouched(); }
+    public float getY() {
+        return tp.y;
+    }
+
+    public static boolean isTouched() {
+        return Gdx.input.isTouched();
+    }
 }

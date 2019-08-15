@@ -1,10 +1,6 @@
 package com.mygdx.game.tool;
 
-import com.badlogic.gdx.physics.box2d.Contact;
-import com.badlogic.gdx.physics.box2d.ContactImpulse;
-import com.badlogic.gdx.physics.box2d.ContactListener;
-import com.badlogic.gdx.physics.box2d.Fixture;
-import com.badlogic.gdx.physics.box2d.Manifold;
+import com.badlogic.gdx.physics.box2d.*;
 import com.mygdx.game.ZombieTrain;
 import com.mygdx.game.screen.MenuScreen;
 import com.mygdx.game.screen.PlayScreen;
@@ -13,7 +9,7 @@ import com.mygdx.game.sprite.Zombie;
 
 public class WorldContactListener implements ContactListener {
     private ZombieTrain game;
-    private  PlayScreen playScreen;
+    private PlayScreen playScreen;
 
     public WorldContactListener(ZombieTrain game, PlayScreen playScreen) {
         this.game = game;
@@ -43,15 +39,15 @@ public class WorldContactListener implements ContactListener {
         TrapDoor trapDoor;
         if (fixA.getFilterData().categoryBits == ZombieTrain.ZOMBIE_COLLISION_BIT) {
             zombie = (Zombie) fixA.getBody().getUserData();
-           // trapDoor = (TrapDoor) fixB.getBody().getUserData();
+            // trapDoor = (TrapDoor) fixB.getBody().getUserData();
         } else {
             zombie = (Zombie) fixB.getBody().getUserData();
-           // trapDoor = (TrapDoor) fixA.getBody().getUserData();
+            // trapDoor = (TrapDoor) fixA.getBody().getUserData();
         }
 
         //if (trapDoor.isOpen()) {
-            playScreen.removeZombie(zombie);
-       // }
+        playScreen.removeZombie(zombie);
+        // }
     }
 
     @Override

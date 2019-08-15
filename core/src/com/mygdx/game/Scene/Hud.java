@@ -2,35 +2,30 @@ package com.mygdx.game.Scene;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
-import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.Disposable;
-import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.mygdx.game.ZombieTrain;
 
 public class Hud implements Disposable {
-    private final Vector2 SCORE_POS = new Vector2(ZombieTrain.V_WIDTH / 2 - 12, ZombieTrain.V_HEIGHT - 125);
+    private final Vector2 SCORE_POS = new Vector2(ZombieTrain.V_INIT_WIDTH / 2 - 12, ZombieTrain.V_INIT_HEIGHT - 125);
     private static Integer localHighScore = 0;
 
     public Stage stage;
-    private Viewport viewport;
+    private Viewport gameCam;
 
     private Float score = 0f;
     private Label scoreLabel;
 
-    public Hud(SpriteBatch sb) {
-        viewport = new FitViewport(ZombieTrain.V_WIDTH, ZombieTrain.V_HEIGHT, new OrthographicCamera());
-        stage = new Stage(viewport, sb);
+    public Hud(SpriteBatch sb, Viewport gameCam) {
+        stage = new Stage(gameCam, sb);
 
         Label.LabelStyle deannaLabelStyle = new Label.LabelStyle();
-        BitmapFont myFont = new BitmapFont(Gdx.files.internal("*.fnt"));
-        deannaLabelStyle.font = myFont;
+        deannaLabelStyle.font = new BitmapFont(Gdx.files.internal("*.fnt"));
         deannaLabelStyle.fontColor = Color.GOLDENROD;
 
         scoreLabel = new Label(String.valueOf(score.intValue()), deannaLabelStyle);
@@ -42,7 +37,6 @@ public class Hud implements Disposable {
 
     public void update(float dt) {
         scoreLabel.setText(String.valueOf(score.intValue()));
-
         if (score > localHighScore) {
             localHighScore = score.intValue();
         }
@@ -54,7 +48,7 @@ public class Hud implements Disposable {
     }
 
     public static int getLocalHighScore() {
-        return localHighScore.intValue();
+        return localHighScore;
     }
 
     public void setScore(Float score) {

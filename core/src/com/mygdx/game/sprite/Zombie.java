@@ -2,16 +2,11 @@ package com.mygdx.game.sprite;
 
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.physics.box2d.BodyDef;
-import com.badlogic.gdx.physics.box2d.CircleShape;
-import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.mygdx.game.ZombieTrain;
 import com.mygdx.game.screen.PlayScreen;
 
-import java.util.Random;
-
 public class Zombie extends Agent {
-    private final int ZOMBIE_POS_VARIANCE = ZombieTrain.V_WIDTH + ZombieTrain.V_HEIGHT;
+    private final int ZOMBIE_POS_VARIANCE = ZombieTrain.V_INIT_WIDTH + ZombieTrain.V_INIT_HEIGHT;
     private final int MOVE_SPEED_VARIANCE = 60;
     private final int MOVE_SPEED_MIN = 20;
 
@@ -21,6 +16,12 @@ public class Zombie extends Agent {
         b2body.setUserData(this);
 
         setMoveSpeed(genRandMoveSpeed());
+        setStartPos(genStartPos());
+    }
+
+    @Override
+    public void setup() {
+        super.setup();
         setStartPos(genStartPos());
     }
 
@@ -44,16 +45,16 @@ public class Zombie extends Agent {
         boolean isFarSide = MathUtils.randomBoolean();
 
         // randPos lies on the virtual
-        if (randPos >= ZombieTrain.V_WIDTH) {
-            randPos -= ZombieTrain.V_WIDTH;
+        if (randPos >= ZombieTrain.V_INIT_WIDTH) {
+            randPos -= ZombieTrain.V_INIT_WIDTH;
             if (isFarSide) {
-                pos = new Vector2(ZombieTrain.V_WIDTH, randPos);
+                pos = new Vector2(ZombieTrain.V_INIT_WIDTH, randPos);
             } else {
                 pos = new Vector2(0, randPos);
             }
         } else {    // randPos lies on the horizontal
             if (isFarSide) {
-                pos = new Vector2(randPos, ZombieTrain.V_HEIGHT);
+                pos = new Vector2(randPos, ZombieTrain.V_INIT_HEIGHT);
             } else {
                 pos = new Vector2(randPos, 0);
             }

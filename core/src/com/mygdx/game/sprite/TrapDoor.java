@@ -7,11 +7,7 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.physics.box2d.Body;
-import com.badlogic.gdx.physics.box2d.BodyDef;
-import com.badlogic.gdx.physics.box2d.FixtureDef;
-import com.badlogic.gdx.physics.box2d.PolygonShape;
-import com.badlogic.gdx.physics.box2d.World;
+import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.utils.TimeUtils;
 import com.mygdx.game.ZombieTrain;
 import com.mygdx.game.screen.PlayScreen;
@@ -66,7 +62,6 @@ public class TrapDoor extends Sprite {
                 spriteSheet.getHeight() / FRAME_ROWS);
 
 
-
         // Place the regions into a 1D array in the correct order, starting from the top
         // left, going across first. The Animation constructor requires a 1D array.
         TextureRegion[] walkFrames = new TextureRegion[FRAME_COLS * FRAME_ROWS];
@@ -87,16 +82,19 @@ public class TrapDoor extends Sprite {
         ANIMATION_TIME = (float) FRAME_ROWS * (float) FRAME_COLS * FRAME_DURATION;
     }
 
+    public void setup() {
+    }
+
     public void update(float dt) {
         updatePosition();
 
         // Get current frame of animation for the current stateTime
         float timeSinceLastSpawn = (TimeUtils.nanoTime() - lastSpawnTime) / 1000000000;
         // closing
-        if (timeSinceLastSpawn > (SPAWN_TIME_MILLIS / 1000) - ANIMATION_TIME  && !isClosing) {
+        if (timeSinceLastSpawn > (SPAWN_TIME_MILLIS / 1000) - ANIMATION_TIME && !isClosing) {
             stateTime = ANIMATION_TIME;     // start at end of animation
             isClosing = true;
-        // opening
+            // opening
         } else if (timeSinceLastSpawn < (SPAWN_TIME_MILLIS / 1000) - ANIMATION_TIME && isClosing) {
             stateTime = 0;
             isClosing = false;
@@ -156,7 +154,7 @@ public class TrapDoor extends Sprite {
 
     private Vector2 genNewPosition() {
         stateTime = 0;      // reset animation
-        return new Vector2(MathUtils.random(ZombieTrain.V_WIDTH - 2 * SPAWN_POSITION_MARGIN) + SPAWN_POSITION_MARGIN, MathUtils.random(ZombieTrain.V_HEIGHT - 2 * SPAWN_POSITION_MARGIN) + SPAWN_POSITION_MARGIN);
+        return new Vector2(MathUtils.random(- 2 * SPAWN_POSITION_MARGIN) + SPAWN_POSITION_MARGIN, MathUtils.random(ZombieTrain.V_INIT_HEIGHT - 2 * SPAWN_POSITION_MARGIN) + SPAWN_POSITION_MARGIN);
     }
 
     public Boolean isOpen() {

@@ -17,9 +17,6 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 import com.mygdx.game.Scene.Hud;
 import com.mygdx.game.ZombieTrain;
 
-
-import sun.rmi.runtime.Log;
-
 import static com.mygdx.game.tool.InputHandler.isTouched;
 
 public class MenuScreen implements Screen {
@@ -31,7 +28,7 @@ public class MenuScreen implements Screen {
 
     private Texture background;
 
-    private static final Float MENU_WIDTH =1080f;
+    private static final Float MENU_WIDTH = 1080f;
     private static final Float MENU_HEIGHT = 1920f;
 
     private Integer allTimeHighScore = 0;
@@ -87,20 +84,23 @@ public class MenuScreen implements Screen {
 
     @Override
     public void show() {
-        ZombieTrain.adHandler.showAds(true);
+//        ZombieTrain.adHandler.showAds(true);
     }
 
     private void update(float dt) {
-       if (isTouched()) {
-            game.setScreen(new PlayScreen(game));
-       }
+        if (isTouched()) {
+            PlayScreen playScreen = new PlayScreen(game);
+            playScreen.setup();
+            game.setScreen(playScreen);
 
-       // save highscore
-       if (Hud.getLocalHighScore() > allTimeHighScore) {
-           allTimeHighScore = Hud.getLocalHighScore();
-           file.writeString(String.valueOf(allTimeHighScore), false);
-       }
-       highScoreLabel.setText(String.valueOf(allTimeHighScore));
+        }
+
+        // save highscore
+        if (Hud.getLocalHighScore() > allTimeHighScore) {
+            allTimeHighScore = Hud.getLocalHighScore();
+            file.writeString(String.valueOf(allTimeHighScore), false);
+        }
+        highScoreLabel.setText(String.valueOf(allTimeHighScore));
 
     }
 
@@ -110,7 +110,7 @@ public class MenuScreen implements Screen {
 
         game.batch.setProjectionMatrix(gameCam.combined);
         game.batch.begin();
-            game.batch.draw(background, 0, 0);
+        game.batch.draw(background, 0, 0);
         game.batch.end();
 
         stage.draw();

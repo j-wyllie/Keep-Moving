@@ -5,11 +5,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.physics.box2d.Body;
-import com.badlogic.gdx.physics.box2d.BodyDef;
-import com.badlogic.gdx.physics.box2d.CircleShape;
-import com.badlogic.gdx.physics.box2d.FixtureDef;
-import com.badlogic.gdx.physics.box2d.World;
+import com.badlogic.gdx.physics.box2d.*;
 import com.mygdx.game.ZombieTrain;
 import com.mygdx.game.screen.PlayScreen;
 
@@ -19,8 +15,8 @@ public abstract class Agent extends Sprite {
     private float moveSpeed = 100;
     private final int HIT_BOX_RADIUS = 5;
     private short collisionBit = 0;
-    private Vector2 startPos = new Vector2(ZombieTrain.V_WIDTH / 2, ZombieTrain.V_HEIGHT / 2);
-    private Vector2 targetPos = new Vector2(ZombieTrain.V_WIDTH / 2, ZombieTrain.V_HEIGHT / 2);
+    private Vector2 startPos = new Vector2(ZombieTrain.V_INIT_WIDTH / 2, ZombieTrain.V_INIT_HEIGHT / 2);
+    private Vector2 targetPos = new Vector2(ZombieTrain.V_INIT_WIDTH / 2, ZombieTrain.V_INIT_HEIGHT / 2);
 
     private World world;
     protected Body b2body;
@@ -39,6 +35,11 @@ public abstract class Agent extends Sprite {
 
         world = playScreen.getWorld();
         definePhysics();
+    }
+
+    public void setup() {
+        startPos = new Vector2(playScreen.getGameWidth() / 2, playScreen.getGameHeight() / 2);
+        targetPos = new Vector2(playScreen.getGameWidth() / 2, playScreen.getGameHeight() / 2);
     }
 
     public abstract void update(float dt);
@@ -71,19 +72,34 @@ public abstract class Agent extends Sprite {
         }
     }
 
-    protected void setMoveSpeed(float moveSpeed) { this.moveSpeed = moveSpeed; }
-    protected void setTargetPos(Vector2 targetPos) { this.targetPos = targetPos; }
+    protected void setMoveSpeed(float moveSpeed) {
+        this.moveSpeed = moveSpeed;
+    }
+
+    protected void setTargetPos(Vector2 targetPos) {
+        this.targetPos = targetPos;
+    }
+
     public void setTargetPos(float x, float y) {
         targetPos.x = x;
         targetPos.y = y;
     }
-    public float getOriginBasedX() { return b2body.getPosition().x; }
-    public float getOriginBasedY() { return b2body.getPosition().y; }
 
-    public Vector2 getOriginBasedPos() { return new Vector2(getOriginBasedX(), getOriginBasedY()); }
+    public float getOriginBasedX() {
+        return b2body.getPosition().x;
+    }
+
+    public float getOriginBasedY() {
+        return b2body.getPosition().y;
+    }
+
+    public Vector2 getOriginBasedPos() {
+        return new Vector2(getOriginBasedX(), getOriginBasedY());
+    }
 
     /**
      * Initialisation requirement
+     *
      * @param startPos
      */
     protected void setStartPos(Vector2 startPos) {
