@@ -44,19 +44,19 @@ public class Zombie extends Agent {
         int randPos = MathUtils.random(0, ZOMBIE_POS_VARIANCE);
         boolean isFarSide = MathUtils.randomBoolean();
 
-        // randPos lies on the virtual
-        if (randPos >= ZombieTrain.V_INIT_WIDTH) {
-            randPos -= ZombieTrain.V_INIT_WIDTH;
+        // randPos lies on the vertical
+        if (randPos >= screenWidth) {
+            randPos -= screenWidth;
             if (isFarSide) {
-                pos = new Vector2(ZombieTrain.V_INIT_WIDTH, randPos);
+                pos = new Vector2(screenWidth + getWidth(), randPos);
             } else {
-                pos = new Vector2(0, randPos);
+                pos = new Vector2(-getWidth(), randPos);
             }
         } else {    // randPos lies on the horizontal
             if (isFarSide) {
-                pos = new Vector2(randPos, ZombieTrain.V_INIT_HEIGHT);
+                pos = new Vector2(randPos, screenHeight + getHeight());
             } else {
-                pos = new Vector2(randPos, 0);
+                pos = new Vector2(randPos, -getHeight());
             }
         }
         return pos;

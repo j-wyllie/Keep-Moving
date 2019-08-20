@@ -15,6 +15,8 @@ public abstract class Agent extends Sprite {
     private float moveSpeed = 100;
     private final int HIT_BOX_RADIUS = 5;
     private short collisionBit = 0;
+    float screenWidth = ZombieTrain.V_INIT_WIDTH;
+    float screenHeight = ZombieTrain.V_INIT_HEIGHT;
     private Vector2 startPos = new Vector2(ZombieTrain.V_INIT_WIDTH / 2, ZombieTrain.V_INIT_HEIGHT / 2);
     private Vector2 targetPos = new Vector2(ZombieTrain.V_INIT_WIDTH / 2, ZombieTrain.V_INIT_HEIGHT / 2);
 
@@ -38,8 +40,10 @@ public abstract class Agent extends Sprite {
     }
 
     public void setup() {
-        startPos = new Vector2(playScreen.getGameWidth() / 2, playScreen.getGameHeight() / 2);
-        targetPos = new Vector2(playScreen.getGameWidth() / 2, playScreen.getGameHeight() / 2);
+        screenWidth = playScreen.getGameWidth();
+        screenHeight = playScreen.getGameHeight();
+        startPos = new Vector2(screenWidth / 2, screenHeight / 2);
+        targetPos = new Vector2(screenWidth / 2, screenHeight / 2);
     }
 
     public abstract void update(float dt);
