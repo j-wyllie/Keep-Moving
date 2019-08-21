@@ -13,7 +13,7 @@ public abstract class Agent extends Sprite {
     private PlayScreen playScreen;
     private Texture agentImage;
     private float moveSpeed = 100;
-    private final int HIT_BOX_RADIUS = 5;
+    private final float hitBoxRadius;
     private short collisionBit = 0;
     float screenWidth = ZombieTrain.V_INIT_WIDTH;
     float screenHeight = ZombieTrain.V_INIT_HEIGHT;
@@ -24,9 +24,10 @@ public abstract class Agent extends Sprite {
     protected Body b2body;
     protected Vector2 velocity;
 
-    public Agent(PlayScreen playScreen, String texturePath, short collisionBit) {
+    public Agent(PlayScreen playScreen, String texturePath, short collisionBit, float hitBoxRadius) {
         this.playScreen = playScreen;
         this.collisionBit = collisionBit;
+        this.hitBoxRadius = hitBoxRadius;
 
         agentImage = new Texture(Gdx.files.internal(texturePath));
         setSize(agentImage.getWidth(), agentImage.getHeight());
@@ -56,7 +57,7 @@ public abstract class Agent extends Sprite {
 
         FixtureDef fdef = new FixtureDef();
         CircleShape shape = new CircleShape();
-        shape.setRadius(HIT_BOX_RADIUS);
+        shape.setRadius(hitBoxRadius);
 
         fdef.shape = shape;
         fdef.filter.categoryBits = collisionBit;

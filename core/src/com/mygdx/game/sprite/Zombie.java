@@ -6,12 +6,13 @@ import com.mygdx.game.ZombieTrain;
 import com.mygdx.game.screen.PlayScreen;
 
 public class Zombie extends Agent {
+    private static final float HIT_BOX_RADIUS = 5;
     private final int MOVE_SPEED_VARIANCE = 60;
     private final int MOVE_SPEED_MIN = 20;
     private float zombiePosVariance = ZombieTrain.V_INIT_WIDTH + ZombieTrain.V_INIT_HEIGHT;
 
     public Zombie(PlayScreen playScreen) {
-        super(playScreen, "zombie.png", ZombieTrain.ZOMBIE_COLLISION_BIT);
+        super(playScreen, "zombie.png", ZombieTrain.ZOMBIE_COLLISION_BIT, HIT_BOX_RADIUS);
 
         b2body.setUserData(this);
 
