@@ -12,6 +12,7 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 import com.mygdx.game.Scene.Hud;
 import com.mygdx.game.ZombieTrain;
 import com.mygdx.game.sprite.Player;
+import com.mygdx.game.sprite.SuperZombie;
 import com.mygdx.game.sprite.TrapDoor;
 import com.mygdx.game.sprite.Zombie;
 import com.mygdx.game.tool.B2WorldCreator;
@@ -19,10 +20,11 @@ import com.mygdx.game.tool.InputHandler;
 import com.mygdx.game.tool.WorldContactListener;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 
 public class PlayScreen implements Screen {
-    private static final long SPAWN_TIME_MILLIS = 1000;
+    private static final long ZOMBIE_SPAWN_TIME_MILLIS = 1000;
+    private static final long SUPERZOMBIE_SPAWN_TIME_MILLIS = 4000;
+    private static final long FIRST_SUPERZOMBIE_TIME_MILLIS = 15000;
     private int NUM_START_ZOMBIES = 10;
 
     private Float gameWidth = (float) ZombieTrain.V_INIT_WIDTH;
@@ -45,11 +47,12 @@ public class PlayScreen implements Screen {
     private Player mainPlayer;
     private TrapDoor trapDoor;
     private ArrayList<Zombie> zombies;
-    private Iterator<Zombie> zombieIter;
-    private long lastSpawnTime;
+    private ArrayList<SuperZombie> superZombies;
+    private long lastSpawnTimeZombie;
+    private long lastSpawnTimeSuperZombie;
     private Texture backGround;
 
-    private Float totalNumberOfZombiesSpawned = (float) NUM_START_ZOMBIES;
+    private Float score = (float) NUM_START_ZOMBIES;
 
     PlayScreen(ZombieTrain game) {
         this.game = game;
@@ -81,11 +84,12 @@ public class PlayScreen implements Screen {
         this.mainPlayer = new Player(this);
         this.trapDoor = new TrapDoor(this);
         this.zombies = new ArrayList<Zombie>();
-        this.zombieIter = this.zombies.iterator();
         for (int i = 0; i < NUM_START_ZOMBIES; i++) {
             zombies.add(new Zombie(this));
         }
-        lastSpawnTime = TimeUtils.nanoTime();
+        this.superZombies = new ArrayList<SuperZombie>();
+        lastSpawnTimeZombie = TimeUtils.nanoTime();
+        lastSpawnTimeSuperZombie = TimeUtils.nanoTime();
 
         // load background
         // backGround = new Texture("plain_blue.png");
@@ -118,20 +122,31 @@ public class PlayScreen implements Screen {
         zombiesToDispose.clear();
 
         // update game timer
-        hud.setScore(totalNumberOfZombiesSpawned - NUM_START_ZOMBIES);
+        hud.setScore(score - NUM_START_ZOMBIES);
         hud.update(dt);
 
         // spawning new zombies
-        if (TimeUtils.nanoTime() - lastSpawnTime > SPAWN_TIME_MILLIS * 1000000) {
-            lastSpawnTime = TimeUtils.nanoTime();
+        if (TimeUtils.nanoTime() - lastSpawnTimeZombie > ZOMBIE_SPAWN_TIME_MILLIS * 1000000) {
+            lastSpawnTimeZombie = TimeUtils.nanoTime();
             zombies.add(new Zombie(this));
-            totalNumberOfZombiesSpawned++;
+            score++;
+        }
+
+        // spawning new super zombies
+        if (TimeUtils.nanoTime() > FIRST_SUPERZOMBIE_TIME_MILLIS * 1000000) {
+            if (TimeUtils.nanoTime() - lastSpawnTimeSuperZombie > SUPERZOMBIE_SPAWN_TIME_MILLIS * 1000000) {
+                lastSpawnTimeSuperZombie = TimeUtils.nanoTime();
+                superZombies.add(new SuperZombie(this));
+            }
         }
 
         mainPlayer.update(dt);
         trapDoor.update(dt);
         for (Zombie zombie : zombies) {
             zombie.update(dt, mainPlayer.getOriginBasedPos());
+        }
+        for (SuperZombie superZombie : superZombies) {
+            superZombie.update(dt, mainPlayer.getOriginBasedPos());
         }
     }
 
@@ -154,6 +169,10 @@ public class PlayScreen implements Screen {
         trapDoor.draw(game.batch);
         for (Zombie zombie : zombies) {
             zombie.draw(game.batch);
+        }
+        for (SuperZombie superZombie : superZombies) {
+            superZombie.draw(game.batch);
+            System.out.println("spawing super zombie");
         }
         game.batch.end();
 

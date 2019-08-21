@@ -5,14 +5,13 @@ import com.badlogic.gdx.math.Vector2;
 import com.mygdx.game.ZombieTrain;
 import com.mygdx.game.screen.PlayScreen;
 
-public class Zombie extends Agent {
-    private final int MOVE_SPEED_VARIANCE = 60;
-    private final int MOVE_SPEED_MIN = 20;
-    private float zombiePosVariance = ZombieTrain.V_INIT_WIDTH + ZombieTrain.V_INIT_HEIGHT;
+public class SuperZombie extends Agent {
+    private final int ZOMBIE_POS_VARIANCE = ZombieTrain.V_INIT_WIDTH + ZombieTrain.V_INIT_HEIGHT;
+    private final int MOVE_SPEED_VARIANCE = 22;
+    private final int MOVE_SPEED_MIN = 8;
 
-    public Zombie(PlayScreen playScreen) {
-        super(playScreen, "zombie.png", ZombieTrain.ZOMBIE_COLLISION_BIT);
-
+    public SuperZombie(PlayScreen playScreen) {
+        super(playScreen, "super_zombie.png", ZombieTrain.ZOMBIE_COLLISION_BIT);
         b2body.setUserData(this);
 
         setMoveSpeed(genRandMoveSpeed());
@@ -23,7 +22,6 @@ public class Zombie extends Agent {
     public void setup() {
         super.setup();
         setStartPos(genStartPos());
-        zombiePosVariance = screenWidth + screenHeight;
     }
 
     @Override
@@ -42,7 +40,7 @@ public class Zombie extends Agent {
 
     protected Vector2 genStartPos() {
         Vector2 pos;
-        float randPos = MathUtils.random(0, zombiePosVariance);
+        int randPos = MathUtils.random(0, ZOMBIE_POS_VARIANCE);
         boolean isFarSide = MathUtils.randomBoolean();
 
         // randPos lies on the vertical

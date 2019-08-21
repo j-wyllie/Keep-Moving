@@ -16,7 +16,7 @@ public class TrapDoor extends Sprite {
     private final static float HIDE_TIME_MILLIS = 5000;
     private final static float SPAWN_TIME_MILLIS = 6500;
     private final static float OPEN_TIME_MILLIS = 400;
-    private final static float SPAWN_POSITION_MARGIN = 7;
+    private final static float SPAWN_POSITION_MARGIN = 10;
     private final static Integer FRAME_COLS = 4;
     private final static Integer FRAME_ROWS = 2;
     private final static float FRAME_DURATION = 0.1f;
@@ -34,6 +34,8 @@ public class TrapDoor extends Sprite {
     private Boolean isOpen = false;
     private Boolean isOpening = false;
     private Boolean isClosing = false;
+    float screenWidth = ZombieTrain.V_INIT_WIDTH;
+    float screenHeight = ZombieTrain.V_INIT_HEIGHT;
 
     private World world;
     private Body b2body;
@@ -83,6 +85,8 @@ public class TrapDoor extends Sprite {
     }
 
     public void setup() {
+        screenWidth = playScreen.getGameWidth();
+        screenHeight = playScreen.getGameHeight();
     }
 
     public void update(float dt) {
@@ -154,7 +158,7 @@ public class TrapDoor extends Sprite {
 
     private Vector2 genNewPosition() {
         stateTime = 0;      // reset animation
-        return new Vector2(MathUtils.random(- 2 * SPAWN_POSITION_MARGIN) + SPAWN_POSITION_MARGIN, MathUtils.random(ZombieTrain.V_INIT_HEIGHT - 2 * SPAWN_POSITION_MARGIN) + SPAWN_POSITION_MARGIN);
+        return new Vector2(MathUtils.random(screenWidth - 2 * SPAWN_POSITION_MARGIN) + SPAWN_POSITION_MARGIN, MathUtils.random(screenHeight - 2 * SPAWN_POSITION_MARGIN) + SPAWN_POSITION_MARGIN);
     }
 
     public Boolean isOpen() {
