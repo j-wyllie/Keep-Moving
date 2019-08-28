@@ -12,6 +12,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.utils.Align;
+import com.badlogic.gdx.utils.TimeUtils;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.mygdx.game.Scene.Hud;
@@ -30,6 +31,7 @@ public class MenuScreen implements Screen {
 
     private static final Float MENU_WIDTH = 1080f;
     private static final Float MENU_HEIGHT = 1920f;
+    private static final long INACTIVE_TIME_MILLIS = 1000;
 
     private Integer allTimeHighScore = 0;
     private final Vector2 SCORE_POS = new Vector2(MENU_WIDTH / 2 - 100, MENU_HEIGHT - 800);
@@ -38,6 +40,7 @@ public class MenuScreen implements Screen {
     private final String INSTRUCTION_TEXT = "tap to play\nhigh score";
     private final Vector2 TEXT_POS = new Vector2(MENU_WIDTH / 2 - 350, MENU_HEIGHT - 680);
     private Label instructionText;
+    private long inactiveTimer;
 
 
     public MenuScreen(ZombieTrain game) {
@@ -84,11 +87,13 @@ public class MenuScreen implements Screen {
 
     @Override
     public void show() {
+        inactiveTimer = TimeUtils.millis();
 //        ZombieTrain.adHandler.showAds(true);
     }
 
     private void update(float dt) {
-        if (isTouched()) {
+        if (isTouched() && (TimeUtils.millis() - inactiveTimer) > INACTIVE_TIME_MILLIS) {
+            inactiveTimer = TimeUtils.millis();
             PlayScreen playScreen = new PlayScreen(game);
             playScreen.setup();
             game.setScreen(playScreen);

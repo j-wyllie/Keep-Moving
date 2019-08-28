@@ -20,6 +20,8 @@ public class ZombieTrain extends Game {
     public SpriteBatch batch;
     public static AdHandler adHandler;
 
+    private Boolean isMute = false;
+
     public ZombieTrain() {
     }
 

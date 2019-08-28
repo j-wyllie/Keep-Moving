@@ -1,5 +1,7 @@
 package com.mygdx.game.tool;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.physics.box2d.*;
 import com.mygdx.game.ZombieTrain;
 import com.mygdx.game.screen.MenuScreen;
@@ -10,6 +12,9 @@ import com.mygdx.game.sprite.Zombie;
 public class WorldContactListener implements ContactListener {
     private ZombieTrain game;
     private PlayScreen playScreen;
+
+    Sound deadSound = Gdx.audio.newSound(Gdx.files.internal("Random 20.wav"));
+
 
     public WorldContactListener(ZombieTrain game, PlayScreen playScreen) {
         this.game = game;
@@ -25,6 +30,7 @@ public class WorldContactListener implements ContactListener {
 
         switch (cDef) {
             case ZombieTrain.PLAYER_COLLISION_BIT | ZombieTrain.ZOMBIE_COLLISION_BIT:
+                deadSound.play(1.0f);
                 game.setScreen(new MenuScreen(game));
                 break;
             case ZombieTrain.ZOMBIE_COLLISION_BIT | ZombieTrain.TRAP_COLLISION_BIT:
