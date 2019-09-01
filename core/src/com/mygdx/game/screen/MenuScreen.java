@@ -17,15 +17,18 @@ import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.mygdx.game.Scene.Hud;
 import com.mygdx.game.ZombieTrain;
+import com.mygdx.game.sprite.SoundIcon;
+import com.mygdx.game.tool.InputHandler;
+import com.mygdx.game.tool.TouchListener;
 
-import static com.mygdx.game.tool.InputHandler.isTouched;
 
-public class MenuScreen implements Screen {
+public class MenuScreen implements Screen, TouchListener {
     private ZombieTrain game;
     private Stage stage;
     private OrthographicCamera gameCam;
     private Viewport gamePort;
     private FileHandle file;
+    private InputHandler inputHandler;
 
     private Texture background;
 
@@ -40,6 +43,7 @@ public class MenuScreen implements Screen {
     private final String INSTRUCTION_TEXT = "tap to play\nhigh score";
     private final Vector2 TEXT_POS = new Vector2(MENU_WIDTH / 2 - 350, MENU_HEIGHT - 680);
     private Label instructionText;
+    private SoundIcon soundIcon;
     private long inactiveTimer;
 
 
@@ -55,6 +59,8 @@ public class MenuScreen implements Screen {
         // initially set our gamcam to be centered correctly at the start of of map
         gameCam.position.set(gamePort.getWorldWidth() / 2, gamePort.getWorldHeight() / 2, 0);
         stage = new Stage(gamePort, game.batch);
+
+        inputHandler = new InputHandler(gameCam, this);
 
         background = new Texture("menu_background_highres.png");
 
@@ -81,6 +87,8 @@ public class MenuScreen implements Screen {
         instructionText.setPosition(TEXT_POS.x, TEXT_POS.y);
         instructionText.setAlignment(Align.center);
 
+        soundIcon = new SoundIcon(gamePort);
+
         stage.addActor(highScoreLabel);
         stage.addActor(instructionText);
     }
@@ -92,12 +100,12 @@ public class MenuScreen implements Screen {
     }
 
     private void update(float dt) {
-        if (isTouched() && (TimeUtils.millis() - inactiveTimer) > INACTIVE_TIME_MILLIS) {
+        Vector2 touchPoint = new Vector2(inputHandler.getTouchPoint().x, inputHandler.getTouchPoint().y);
+        if (InputHandler.isTouched() && (TimeUtils.millis() - inactiveTimer) > INACTIVE_TIME_MILLIS && !soundIcon.getBoundingRectangle().contains(touchPoint)) {
             inactiveTimer = TimeUtils.millis();
             PlayScreen playScreen = new PlayScreen(game);
             playScreen.setup();
             game.setScreen(playScreen);
-
         }
 
         // save highscore
@@ -116,6 +124,7 @@ public class MenuScreen implements Screen {
         game.batch.setProjectionMatrix(gameCam.combined);
         game.batch.begin();
         game.batch.draw(background, 0, 0);
+        soundIcon.draw(game.batch);
         game.batch.end();
 
         stage.draw();
@@ -144,5 +153,13 @@ public class MenuScreen implements Screen {
     @Override
     public void dispose() {
 
+    }
+
+    @Override
+    public void onTouchUp() {
+        Vector2 touchPoint = new Vector2(inputHandler.getTouchPoint().x, inputHandler.getTouchPoint().y);
+        if (soundIcon.getBoundingRectangle().contains(touchPoint)) {
+            soundIcon.touched();
+        }
     }
 }

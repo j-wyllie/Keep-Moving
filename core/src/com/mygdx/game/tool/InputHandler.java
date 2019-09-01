@@ -9,6 +9,7 @@ import com.badlogic.gdx.math.Vector3;
 
 public class InputHandler implements InputProcessor {
     private Camera camera;
+    private TouchListener touchListener = null;
     private Vector3 tp;
     private boolean dragging;
 
@@ -17,6 +18,14 @@ public class InputHandler implements InputProcessor {
         Gdx.input.setInputProcessor(this);
         tp = new Vector3(0, 0, 0);
     }
+
+    public InputHandler(Camera camera, TouchListener touchListener) {
+        this.camera = camera;
+        this.touchListener = touchListener;
+        Gdx.input.setInputProcessor(this);
+        tp = new Vector3(0, 0, 0);
+    }
+
 
     public InputHandler(Camera camera, Vector2 startPos) {
         this.camera = camera;
@@ -37,6 +46,9 @@ public class InputHandler implements InputProcessor {
     public boolean touchUp(int screenX, int screenY, int pointer, int button) {
         if (button != Input.Buttons.LEFT || pointer > 0) return false;
         camera.unproject(tp.set(screenX, screenY, 0));
+        if (touchListener != null) {
+            touchListener.onTouchUp();
+        }
         dragging = false;
         return true;
     }
